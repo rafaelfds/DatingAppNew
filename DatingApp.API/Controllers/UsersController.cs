@@ -15,28 +15,28 @@ namespace DatingApp.API.Controllers
     [ApiController]
     public class UsersController : ControllerBase
     {
-        private readonly IDatingRepository _Repo;
-        private readonly IMapper _Mapper;
+        private readonly IDatingRepository _repo;
+        private readonly IMapper _mapper;
         public UsersController(IDatingRepository repo, IMapper mapper)
         {
-            this._Mapper = mapper;
-            this._Repo = repo;
+            this._mapper = mapper;
+            this._repo = repo;
         }
 
         [HttpGet]
         public async Task<IActionResult> GetUsers()
         {
-            var users = await _Repo.GetUsers();
-            var usersToReturn = _Mapper.Map<IEnumerable<UserForListDto>>(users);
+            var users = await _repo.GetUsers();
+            var usersToReturn = _mapper.Map<IEnumerable<UserForListDto>>(users);
 
             return Ok(usersToReturn);
         }
 
-        [HttpGet("{id}")]
+        [HttpGet("{id}", Name = "GetUser")]
         public async Task<IActionResult> GetUser(int id)
         {
-            var user = await _Repo.GetUser(id);
-            var userToReturn = _Mapper.Map<UserForDetailedDto>(user);
+            var user = await _repo.GetUser(id);
+            var userToReturn = _mapper.Map<UserForDetailedDto>(user);
 
             return Ok(userToReturn);
         }
@@ -47,11 +47,11 @@ namespace DatingApp.API.Controllers
             if (id != int.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value))
                 return Unauthorized();
 
-            var userFromRepo = await _Repo.GetUser(id);
+            var userFromRepo = await _repo.GetUser(id);
 
-            _Mapper.Map(userForUpdateDto, userFromRepo);
+            _mapper.Map(userForUpdateDto, userFromRepo);
 
-            if (await _Repo.SaveAll())
+            if (await _repo.SaveAll())
                 return NoContent();
 
             throw new Exception($"Updating user {id} failed on save");
