@@ -14,7 +14,7 @@ import { AlertifyService } from '../_services/alertify.service';
 export class ListsComponent implements OnInit {
   users: User[];
   pagination: Pagination;
-  likesParam: string;
+  likesParam: 'Likers';
 
   constructor(private authService: AuthService,
               private userService: UserService,
