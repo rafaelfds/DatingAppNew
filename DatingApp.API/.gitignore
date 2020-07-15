@@ -3,3 +3,6 @@ bin
 obj
 *.db
 appsettings.json
+
+#Angular APP
+wwwroot
